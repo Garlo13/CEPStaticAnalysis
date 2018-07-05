@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="esper" nsURI="http://www.xtext.org/example/mydsl/Esper" nsPrefix="esper">
+  <eClassifiers xsi:type="ecore:EClass" name="Domainmodel">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rules" upperBound="-1"
+        eType="#//RuleParts" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="events" upperBound="-1"
+        eType="#//Event" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Event" eSuperTypes="#//KindOfEvent">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eventattributes" eType="#//Attributes"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Attributes">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attribute" upperBound="-1"
+        eType="#//AttributesDefinition" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AttributesDefinition">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RuleParts">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nameRule" eType="#//Name"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="insert" eType="#//Insert"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="priority" eType="#//Priority"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="selectRule" eType="#//Select"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fromRule" eType="#//From"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="groupBy" eType="#//GroupBy"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="having" eType="#//Having"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Insert" eSuperTypes="#//KindOfEvent"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Name">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Priority">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="priorityInt" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Select">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="selectAttributes" upperBound="-1"
+        eType="#//SelectAttributesDefinition" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="alias" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="asterisk" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KindSelectAttributesDefinition">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="singleSelectDefinition"
+        eType="#//SingleSelectDefinition" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="defaultMethod" eType="#//DefaultMethods"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="int" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="string" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SelectAttributesDefinition">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rightSide" upperBound="-1"
+        eType="#//KindSelectAttributesDefinition" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" unique="false"
+        upperBound="-1" eType="#//Operators"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="leftSide" upperBound="-1"
+        eType="#//KindSelectAttributesDefinition" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SingleSelectDefinition">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="event" unique="false" upperBound="-1"
+        eType="#//SingleDefinition"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attribute" unique="false"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="From">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="event" eType="#//Event"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="anything" eType="#//Anything"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pattern" eType="#//Pattern"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Pattern">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="joinFollowBy" eType="#//JoinFollowBy"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="win" eType="#//Win" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="JoinFollowBy">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="followsByJoinList" upperBound="-1"
+        eType="#//AbstractFollowBy" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" unique="false"
+        upperBound="-1" eType="#//Operators"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractFollowBy">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="followBy" eType="#//FollowBy"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="wherePart" eType="#//FollowByWhere"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FollowBy">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="leftSide" eType="#//TerminalExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rightSide" upperBound="-1"
+        eType="#//TerminalExpression" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TerminalExpression">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="every" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="everyExpression" eType="#//FollowBy"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="parenthesis" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="betweenParenthesis" eType="#//FollowBy"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="singleDefinition" eType="#//SingleDefinition"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KindOfEvent">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SingleDefinition">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="simpleEvents" eType="#//KindOfEvent"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="anything" eType="#//Anything"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Win">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="defaultMethod" eType="#//DefaultMethods"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FollowByWhere">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="timer" eType="#//Timer"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Timer">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="defaultMethod" eType="#//DefaultMethods"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GroupBy">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="anything" eType="#//Anything"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Having">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="defaultMethod" eType="#//DefaultMethods"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//Operators"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="anything" eType="#//Anything"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DefaultMethods">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="anything" eType="#//Anything"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Anything" eSuperTypes="#//ExtraParenthesisRule">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" unique="false"
+        upperBound="-1" eType="#//Operators"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="extraParenthesis" upperBound="-1"
+        eType="#//ExtraParenthesisRule" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExtraParenthesisRule"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="Operators">
+    <eLiterals name="equal" literal="="/>
+    <eLiterals name="lessThan" value="1" literal="&lt;"/>
+    <eLiterals name="moreThan" value="2" literal=">"/>
+    <eLiterals name="lessEqualThan" value="3" literal="&lt;="/>
+    <eLiterals name="moreEqualThan" value="4" literal=">="/>
+    <eLiterals name="and" value="5" literal="and"/>
+    <eLiterals name="or" value="6" literal="or"/>
+    <eLiterals name="between" value="7" literal="between"/>
+    <eLiterals name="in" value="8" literal="in"/>
+    <eLiterals name="not" value="9" literal="not"/>
+    <eLiterals name="notIn" value="10" literal="not in"/>
+    <eLiterals name="plus" value="11" literal="+"/>
+    <eLiterals name="minus" value="12" literal="-"/>
+    <eLiterals name="multiplication" value="13" literal="*"/>
+    <eLiterals name="isnot" value="14" literal="is not"/>
+  </eClassifiers>
+</ecore:EPackage>

@@ -1,0 +1,151 @@
+grammar org.xtext.example.mydsl.Esper with org.eclipse.xtext.common.Terminals
+
+generate esper "http://www.xtext.org/example/mydsl/Esper"
+
+Domainmodel :
+    (rules+=RuleParts | events+=Event)*;
+ 
+  
+//------------------EVENTS-------------------------------------------
+Event:
+	'create' 'schema' name=ID eventattributes=Attributes ';';
+
+Attributes:
+	'(' attribute+=AttributesDefinition (',' attribute+=AttributesDefinition)* ')' 
+;
+
+AttributesDefinition:
+	name+=ID type+=ID
+;
+//--------------------RULES-------------------------------------------
+RuleParts:
+    (nameRule = Name) (insert = Insert) (priority = Priority)? (selectRule = Select) (fromRule = From) (groupBy = GroupBy)? (having = Having)?';'; 
+    
+Insert:
+	'insert' 'into' name=ID ;
+
+Name:
+	'@Name' '(' name=STRING ')';
+	
+Priority:
+	'@Priority' '('priorityInt = INT ')'
+;
+	
+Select:
+	'select' ( selectAttributes += SelectAttributesDefinition ('as' alias+=ValidID)? )+ 
+			(',' selectAttributes += SelectAttributesDefinition ('as' alias+=ValidID)?)*
+	
+	| (asterisk?='*')
+;
+
+KindSelectAttributesDefinition:
+	singleSelectDefinition = SingleSelectDefinition |
+	defaultMethod = DefaultMethods |
+	int = INT |
+	string = STRING
+;
+	
+SelectAttributesDefinition:
+	rightSide += (KindSelectAttributesDefinition) (operator+=Operators leftSide+= (KindSelectAttributesDefinition ))*
+;
+
+SingleSelectDefinition:
+	event+=[SingleDefinition] '.' (attribute+=ID | '*' )
+;
+
+From:
+	'from' 
+		((event=[Event] ('(' anything = Anything')' | '.' anything=Anything )) 
+		| pattern = Pattern )
+;
+
+//------------------Pattern----------------------------
+Pattern:
+	'pattern' '[' joinFollowBy=JoinFollowBy ']' ('.' win=Win)?
+;
+//------------------FollowBy----------------------------
+
+JoinFollowBy:
+	followsByJoinList+=AbstractFollowBy (operator+=Operators followsByJoinList+=AbstractFollowBy)*
+;
+
+AbstractFollowBy:
+	(=> followBy = FollowBy | '(' followBy = FollowBy ')' ) (wherePart=FollowByWhere)?
+;
+
+FollowBy:
+	leftSide=TerminalExpression (=> '->' rightSide+=TerminalExpression)*  
+;
+
+TerminalExpression:
+	every?='every' everyExpression = FollowBy |
+	parenthesis?='(' betweenParenthesis = FollowBy ')' |
+	singleDefinition = SingleDefinition
+;
+
+KindOfEvent: Event | Insert;
+
+SingleDefinition:
+	(=> name=ID '=')? simpleEvents=[KindOfEvent] (=>'('anything=Anything')')? 
+;
+//--------------------------Win-----------------------------------
+Win:
+	'win' ':' defaultMethod=DefaultMethods
+;
+
+
+//----------------------Where-------------------------
+FollowByWhere:
+	'(' FollowByWhere ')' |
+	'where' timer=Timer 
+;
+
+Timer:
+	'timer' ':' defaultMethod=DefaultMethods
+;
+
+//-------------------GroupBy------------------------------------
+GroupBy:
+	'group' 'by' anything = Anything
+;
+
+//-------------------Having------------------------------------
+
+Having:
+	'having' defaultMethod = DefaultMethods (operator=Operators) anything=Anything
+;
+
+//-----------------------------------------------------------
+DefaultMethods:
+	name=NameMethod '(' anything = Anything ')'
+;
+
+
+ValidID:
+	ID | NameMethod 
+;
+
+NameMethod:
+	'avg' 
+	| 'current_timestamp'
+	| 'count'
+	| 'max'
+	| 'within'
+	| 'time_batch'
+	| 'time'
+;
+//--------------------------------------------------------
+
+Anything:
+	{Anything} =>(ID | INT | STRING | '.' | operator += Operators | extraParenthesis += ExtraParenthesisRule | 'where' | ANY_OTHER)*
+;
+ExtraParenthesisRule:
+	'(' Anything ')'
+;
+
+//-----------------------------------------------------------
+enum Operators:
+	equal = '=' | lessThan = '<' | moreThan = '>' | lessEqualThan = '<=' | moreEqualThan = '>=' | and = 'and' |
+	 or = 'or' | between = 'between' | in = 'in' | not = 'not' | notIn = 'not in' | plus = '+' | minus = '-' | 
+	 multiplication = '*' | isnot = 'is not' 
+;
